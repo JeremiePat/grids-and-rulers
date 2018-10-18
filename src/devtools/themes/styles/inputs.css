@@ -1,0 +1,118 @@
+
+/* ------------------------------------------------------------------------- *
+ * NORMALIZE BASED INPUT OBJECTS                                             *
+ * ------------------------------------------------------------------------- */
+
+input[type=color] {
+  /* Box model */
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  padding: 0;
+
+  /* Border & Background */
+  border: none;
+
+  /* Position */
+  vertical-align: -0.25rem;
+}
+
+
+/* ------------------------------------------------------------------------- *
+ * CUSTOM INPUT FIELDS                                                       *
+ * ------------------------------------------------------------------------- */
+
+.input {
+  /* Box model */
+  display: inline-block;
+  padding: .25rem .25rem .2rem;
+
+  /* Font & Text */
+  color: var(--text-secondary);
+  white-space: nowrap;
+  line-height: 1;
+
+  /* Border & Background */
+  border: var(--border);
+  border-radius: 2px;
+  background: var(--bg-lighter);
+}
+
+.input input {
+  /* Box model */
+  width: 1.5rem;
+  padding: none;
+
+  /* Font & Text */
+  color: var(--text-primary);
+  font: .7rem sans-serif;
+  text-align: right;
+
+  /* Border & Background */
+  border: none;
+  background: none;
+
+  /* Appearance */
+  -moz-appearance: textfield;
+}
+
+/* We need to special case input.number for Chrome */
+.input input[type=number]::-webkit-inner-spin-button,
+.input input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input.small input,
+.input.small input[type=number]::-webkit-inner-spin-button,
+.input.small input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: initial;
+  -moz-appearance: initial;
+  margin: initial;
+}
+
+
+/* ------------------------------------------------------------------------- *
+ * SPECIAL CASES FOR CUSTOM INPUT FIELDS                                     *
+ * ------------------------------------------------------------------------- */
+
+/* Hidden inputs ----------------------------------------------------------- */
+.input.hidden {
+  /* Box model */
+  display: none;
+}
+
+/* Color inputs ------------------------------------------------------------ */
+.input.color input[type=text]{
+  /* Box model */
+  width: 3rem;
+}
+
+.input.color input[type=color]{
+  /* Box model */
+  width:   100%;
+  height:  100%;
+  margin:  0;
+  padding: 0;
+
+  /* Position */
+  vertical-align: bottom;
+
+  /* UI */
+  cursor: pointer;
+  opacity: 0;
+}
+
+.input.color .preview {
+  /* Box model */
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  overflow: hidden;
+
+  /* Position */
+  vertical-align: -0.13rem;
+
+  /* UI */
+  cursor: pointer;
+}

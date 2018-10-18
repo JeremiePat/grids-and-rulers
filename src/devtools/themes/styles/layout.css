@@ -1,0 +1,222 @@
+
+/* ------------------------------------------------------------------------- *
+ * DATA UI LAYOUT                                                            *
+ * ------------------------------------------------------------------------- */
+
+.grid {
+  /* Grid model */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, auto)) 1fr;
+  grid-auto-rows: auto;
+
+  /* Font & Text */
+  white-space: nowrap;
+
+  /* Border & Background */
+  border-bottom: var(--large-border);
+}
+
+.grid .head {
+  /* Grid model */
+  grid-column: 1 / -1;
+
+  /* Border & Background */
+  border-top: var(--large-border);
+}
+
+.grid .cell {
+  /* Box model */
+  padding: 0 .25rem;
+
+  /* Font & Text */
+  line-height: 2rem;
+
+  /* Border & Background */
+  border-top: var(--border);
+}
+
+.grid .first {
+  /* Font & Text */
+  font-weight: bold;
+  text-align: right;
+}
+
+.grid .last label {
+  /* Font & Text */
+  white-space: nowrap;
+}
+
+.grid.keys .last {
+  /* Grid model */
+  grid-column: 2/-1;
+}
+
+.grid.keys input[type=text] {
+  /* Box model */
+  width: 1rem;
+
+  /* Font & Text */
+  text-align: center
+}
+
+/* Wide devtools window ---------------------------------------------------- */
+@media (min-width: 72rem) {
+  .grid {
+    /* Grid model */
+    grid-template-columns: repeat(5, minmax(0, auto)) 1fr;
+  }
+
+  .grid .last {
+    /* Border & Background */
+    border-right: var(--border);
+  }
+}
+
+/* Small devtools window --------------------------------------------------- */
+@media (max-width: 36rem) {
+  .grid {
+    /* Grid model */
+    grid-template-columns: auto 1fr;
+  }
+
+  .grid .last {
+    /* Grid model */
+    grid-column: 2/-1;
+
+    /* Border & Background */
+    border-top: none;
+  }
+
+  .grid.keys .last {
+    /* Border & Background */
+    border-top: var(--border);
+  }
+
+  .grid.keys .first {
+    /* Font & Text */
+    text-align: right;
+  }
+}
+
+/* Very small devtools window ---------------------------------------------- */
+@media (max-width: 22rem) {
+  .grid {
+    /* Grid model */
+    grid-template-columns: 1fr;
+  }
+
+  .grid .cell {
+    /* Font & Text */
+    text-align: center;
+
+    /* Border & Background */
+    border-top: none;
+  }
+
+  .grid .first {
+    /* Border & Background */
+    border-top: var(--border);
+  }
+
+  .grid.keys .last {
+    /* Border & Background */
+    border-top: none;
+  }
+
+  .grid.keys .first {
+    /* Font & Text */
+    text-align: center;
+  }
+
+  .grid .last,
+  .grid.keys .last{
+    /* Grid model */
+    grid-column: auto;
+
+    /* Font & Text */
+    white-space: normal;
+  }
+}
+
+
+/* ------------------------------------------------------------------------- *
+ * FLEXIBLE CELL LAYOUT                                                            *
+ * ------------------------------------------------------------------------- */
+
+.flex {
+  /* Box model */
+  display: flex;
+
+  /* Border & Background */
+  background-color: var(--bg-darker);
+}
+
+.flex label {
+  /* Box model */
+  padding: 0 0 0 .5rem;
+
+  /* Font & Text */
+  line-height: 2rem;
+}
+
+.flex .stretch {
+  /* Flex model */
+  flex: 1;
+
+  /* Font & Text */
+  text-align: left;
+}
+
+/* Small devtools window --------------------------------------------------- */
+@media (max-width: 36rem) {
+  .flex.large {
+    /* Grid model */
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    grid-template-rows: auto auto;
+  }
+
+  .flex button.toggle {
+    /* Grid model */
+    grid-row: 1/-1;
+    grid-column: 1/2;
+
+    /* Box model */
+    height: auto;
+
+    /* Border & Background */
+    background-position: center .25rem;
+  }
+
+  .flex button.delete {
+    /* Grid model */
+    grid-row: 1/-1;
+    grid-column: 4/5;
+
+    /* Box model */
+    height: auto;
+
+    /* Border & Background */
+    background-position: center .5rem;
+  }
+}
+
+/* Very small devtools window ---------------------------------------------- */
+@media (max-width: 22rem) {
+  .flex, .flex.large {
+    /* Grid model */
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: repeat(2, auto);
+  }
+
+  .flex.large {
+    /* Grid model */
+    grid-template-rows: repeat(4, auto);
+  }
+
+  .flex button.delete {
+    /* Grid model */
+    grid-column: 3/4;
+  }
+}

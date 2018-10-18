@@ -1,0 +1,40 @@
+{
+  "extensionName":        { "message": "Grilles & Repères" },
+  "extensionDescription": { "message": "Ajoutez des repères et des grilles à vos pages pour améliorer le développement de vos applications web" },
+
+  "TabNameGrids":         { "message": "Grilles" },
+  "TabNameRulers":        { "message": "Repères" },
+  "TabNameShortcuts":     { "message": "Raccourcis" },
+
+  "GridDescription":      { "message": "Créez des grilles au dessus de votre contenu. Chaque grille est un motif régulier de colonnes et de lignes accompagné de gouttières horizontal et vertical. Elles peuvent être positionnées et adaptées en fonction de vos besoins." },
+  "RulerDescription":     { "message": "Créez des repères pour mettre en évidence les limites de votre contenu et les mesurer. Chaque repère peut être configuré via cette interface mais il est aussi possible de les déplacer à la souris." },
+  "KeysDescription":      { "message": "Certaines actions récurrentes peuvent être contrôlées au clavier. N'hésitez pas à personnaliser les raccourcis clavier de ces actions en fonction de vos préférences." },
+
+  "BtnAddRulerH":         { "message": "Ajouter un nouveau repère horizontal" },
+  "BtnAddRulerV":         { "message": "Ajouter un nouveau repère vertical" },
+  "BtnAddGrid":           { "message": "Ajouter une grille" },
+  "BtnToggleGrid":        { "message": "Afficher/masquer la grille" },
+  "BtnDeleteGrid":        { "message": "Supprimer la grille" },
+  "BtnToggleRuler":       { "message": "Afficher/masquer le repère" },
+  "BtnDeleteRuler":       { "message": "Supprimer le repère" },
+
+  "LabelPosition":        { "message": "Position" },
+  "LabelOrientation":     { "message": "Orientation" },
+  "LabelColor":           { "message": "Couleur"  },
+  "LabelOpacity":         { "message": "Opacité" },
+
+  "RowHeaderColumns":     { "message": "Colonnes" },
+  "RowHeaderRows":        { "message": "Lignes" },
+
+  "CBLabelAddGutter":     { "message": "Ajouter les gouttières à l’extérieur" },
+  "CBLabelAddSeparator":  { "message": "Ajouter les séparateurs à l’extérieur" },
+
+  "KeyAddGrid":           { "message": "Ajouter une nouvelle grille" },
+  "KeyHideGrids":         { "message": "Masquer toutes les grilles" },
+  "KeyDeleteGrids":       { "message": "Supprimer toutes les grilles" },
+  "KeyToggleGrids":       { "message": "Afficher les grilles les unes après les autres" },
+  "KeyAddHRulers":        { "message": "Ajouter un nouveau repère horizontal" },
+  "KeyAddVRulers":        { "message": "Ajouter un nouveau repère vertical" },
+  "KeyToggleRulers":      { "message": "Afficher/Masquer tous les repères" },
+  "KeyDeleteRulers":      { "message": "Supprimer tous les repères" }
+}

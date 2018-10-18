@@ -1,0 +1,24 @@
+<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <style>
+    use { display: none }
+    use:target { display: block }
+  </style>
+
+  <defs>
+    <path id="eye"
+           d="M0.75,5 a4.60,4.00 0,0,1 8.5,0 a4.60,4.00 0,0,1 -8.5,0 z
+              M1.50,5 a4.35,4.00 0,0,0 7.0,0 a4.35,4.00 0,0,0 -7.0,0 z
+              M3.25,5 a1.75,1.75 0,0,1 3.5,0 a1.75,1.75 0,0,1 -3.5,0 z" />
+
+    <path id="cross"
+           d="M1,1 h2 L9,9 h-2 z M7,1 h2 L3,9 h-2 z" />
+  </defs>
+
+  <use id="eye_light"      xlink:href="#eye" fill="#333333" />
+  <use id="eye_light_fade" xlink:href="#eye" fill="#333333" fill-opacity=".25" />
+  <use id="eye_dark"       xlink:href="#eye" fill="#CCCCCC" />
+  <use id="eye_dark_fade"  xlink:href="#eye" fill="#CCCCCC" fill-opacity=".25" />
+
+  <use id="close_light"    xlink:href="#cross" fill="#333333" />
+  <use id="close_dark"     xlink:href="#cross" fill="#CCCCCC" />
+</svg>

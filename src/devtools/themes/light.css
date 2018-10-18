@@ -1,0 +1,23 @@
+@import './styles/base.css';
+@import './styles/tabs.css';
+@import './styles/inputs.css';
+@import './styles/buttons.css';
+@import './styles/layout.css';
+
+:root {
+  --theme: 'light';
+
+  --text-primary:   rgb(79,79,84); /* #ffffff */
+  --text-secondary: rgb(126,126,128); /* #f9f9fa */
+
+  --bg-darkest: rgb(237, 237, 240);
+  --bg-darker:  rgb(249, 249, 250); /* #0c0c0d */
+  --bg-lighter: rgb(255, 255, 255); /* #4a4a4f */
+
+  --large-border: 2px solid rgb(224, 224, 226);
+  --border:       1px solid rgb(224, 224, 226);
+
+  --img-close:    url(../../../img/buttons.svg#close_light);
+  --img-eye:      url(../../../img/buttons.svg#eye_light);
+  --img-eye-fade: url(../../../img/buttons.svg#eye_light_fade);
+}

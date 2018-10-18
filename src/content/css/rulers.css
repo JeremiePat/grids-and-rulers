@@ -1,0 +1,70 @@
+
+/* ------------------------------------------------------------------------- *
+ * RULERS BASIC STYLES                                                       *
+ * ------------------------------------------------------------------------- */
+
+.--ruler-- {
+  /* Positionning */
+  position: absolute;
+  z-index: 10000;
+
+  /* Border & Background */
+  background: red;
+}
+
+.--ruler--.--v-- {
+  /* UI */
+  cursor: col-resize;
+}
+
+.--ruler--.--h-- {
+  /* UI */
+  cursor: row-resize;
+}
+
+.--ruler--.--h-- .--label-- {
+  /* Positionning */
+  top: 0;
+  left: 20px;
+
+  /* Transforms */
+  transform: translateY(-50%);
+}
+
+.--ruler--.--v-- .--label-- {
+  /* Positionning */
+  position: sticky;
+  top: 20px;
+  left: 0;
+
+  /* Transforms */
+  transform: translateX(-50%);
+}
+
+.--ruler-- .--label-- {
+  /* Box model */
+  display: none;
+  padding: .25rem;
+
+  /* Positionning */
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  /* Transforms */
+  transform: translate(-50%, -50%);
+
+  /* Font & Text */
+  color: white;
+  font: bold 0.75rem monospace;
+
+  /* Border & Background */
+  border-radius: .25rem;
+  background: red;
+
+}
+
+.--ruler--       .--label--.--show--,
+.--ruler--:hover .--label-- {
+  display: inline-block;
+}

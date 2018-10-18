@@ -1,0 +1,40 @@
+{
+  "extensionName":        { "message": "Grids & Rulers" },
+  "extensionDescription": { "message": "Create rulers and grids overlays to help develop your web applications" },
+
+  "TabNameGrids":         { "message": "Grids" },
+  "TabNameRulers":        { "message": "Rulers" },
+  "TabNameShortcuts":     { "message": "Shortcuts" },
+
+  "GridDescription":      { "message": "Create grids that overlay your page. Each grid is a regular pattern of columns and rows with gutters and row separators. They can be freely positioned and constrained to suites your needs." },
+  "RulerDescription":     { "message": "Create rulers over your content to get custom markings and measurements of your layout. Each ruler can be set in this panel as well as it can be grabbed and dragged as necessary." },
+  "KeysDescription":     { "message": "Some usual actions can be control with your keyboard. Feel free to custom the keyboard shortcuts to suite you best." },
+
+  "BtnAddRulerH":         { "message": "Add a new ruler (horizontal)" },
+  "BtnAddRulerV":         { "message": "Add a new ruler (vertical)" },
+  "BtnAddGrid":           { "message": "Add a new grid" },
+  "BtnToggleGrid":        { "message": "Toggle grid" },
+  "BtnDeleteGrid":        { "message": "Delete grid" },
+  "BtnToggleRuler":       { "message": "Toggle ruler" },
+  "BtnDeleteRuler":       { "message": "Delete ruler" },
+
+  "LabelPosition":        { "message": "Position" },
+  "LabelOrientation":     { "message": "Orientation" },
+  "LabelColor":           { "message": "Color" },
+  "LabelOpacity":         { "message": "Opacity" },
+
+  "RowHeaderColumns":     { "message": "Columns" },
+  "RowHeaderRows":        { "message": "Rows" },
+
+  "CBLabelAddGutter":     { "message": "Add outer gutters" },
+  "CBLabelAddSeparator":  { "message": "Add outer line separator" },
+
+  "KeyAddGrid":           { "message": "Add a new grid" },
+  "KeyHideGrids":         { "message": "Hide all grids" },
+  "KeyDeleteGrids":       { "message": "Delete all grids" },
+  "KeyToggleGrids":       { "message": "Circle through all grids" },
+  "KeyAddHRulers":        { "message": "Add a new horizontal ruler" },
+  "KeyAddVRulers":        { "message": "Add a new vertical ruler" },
+  "KeyToggleRulers":      { "message": "Show/Hide all rulers" },
+  "KeyDeleteRulers":      { "message": "Delete all rulers" }
+}
