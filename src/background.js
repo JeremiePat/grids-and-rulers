@@ -120,7 +120,7 @@ browser.tabs.onUpdated.addListener((tabId, info) => {
       })
     }
   }
-}, {properties: ['status']})
+})
 
 
 // Listen for closing tabs in order to clear up stored data

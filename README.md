@@ -5,8 +5,8 @@ Grids & Rulers
 
 Install those extensions directly from the appropriate marketplaces:
 
-- Firefox Add-ons
-- Chrome extensions
+- [Firefox Add-ons](https://addons.mozilla.org/fr/firefox/addon/grids-rulers/)
+- [Chrome extensions](https://chrome.google.com/webstore/detail/grids-rulers/kaippllfihpjicemabbbcljbmcpccabl)
 
 ## Grids
 
