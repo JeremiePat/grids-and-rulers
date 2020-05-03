@@ -1,119 +1,105 @@
 
-// HELPER
-// ----------------------------------------------------------------------------
-function preventSelect (e) {
-  e.preventDefault()
-}
+const disableEvent = e => { e.preventDefault() }
 
-// We maintain a list of all rulers as we need to controle them
-// both from the content page as well as from the devtools panel
-// ----------------------------------------------------------------------------
-const rulers = {}
+const RULER = node => {
+  // PRIVATE FUNTIONS ---------------------------------------------------------
+  function isVertical () {
+    return node.classList.contains(`${EXT_PREFIX}vertical`)
+  }
 
+  function notify (data) {
+    CONNECTION.postMessage({
+      action: 'UPDATE_RULER',
+      id: id(), data
+    })
+  }
 
-// Ruler manager class definition
-// ----------------------------------------------------------------------------
-class Ruler {
-  constructor (data) {
-    this.ruler = document.createElement('div')
-    this.label = document.createElement('span')
+  const drag = offset => e => {
+    const prop = isVertical() ? 'left' : 'top'
+    const pointer = isVertical() ? e.screenX : e.screenY
+    const maxPos = isVertical()
+      ? (document.body.scrollWidth  - node.offsetWidth)
+      : (document.body.scrollHeight - node.offsetHeight)
 
-    this.ruler.className = '--ruler--'
-    this.label.className = '--label--'
+    const position = Math.min(Math.max(pointer - offset, 0), maxPos)
 
-    this.ruler.append(this.label)
+    node.style[prop] = position + 'px'
+    notify({ position })
+  }
 
-    this.evt = {
-      drag: (e) => {
-        this.position(point)
-      },
+  function startDrag (e) {
+    const offset = isVertical() ? (e.screenX - node.offsetLeft) : (e.screenY - node.offsetTop)
+    const dragging = drag(offset)
 
-      resize: () => {
-        this.resize()
-      },
-
-      startDrag: () => {
-        this.label.classList.toggle('--show--', true)
-        window.addEventListener('mousemove', this.evt.drag)
-        window.addEventListener('selectstart', preventSelect)
-      },
-
-      stopDrag: () => {
-        this.label.classList.toggle('--show--', false)
-        window.removeEventListener('mousemove', this.evt.drag)
-        window.removeEventListener('selectstart', preventSelect)
-        browser.runtime.sendMessage({ action: 'UPDATE_RULER_HARD', data: this.data })
-      }
+    function stop () {
+      document.removeEventListener('mouseup', stop)
+      document.removeEventListener('mousemove', dragging)
+      document.removeEventListener('selectstart', disableEvent)
     }
 
-    this.ruler.addEventListener('mousedown', this.evt.startDrag)
-    window.addEventListener('mouseup', this.evt.stopDrag)
-    window.addEventListener('resize',  this.evt.resize)
-
-    this.update(data)
-
-    document.body.prepend(this.ruler)
-
-    rulers[this.data.id] = this
+    document.addEventListener('mouseup', stop)
+    document.addEventListener('mousemove', dragging)
+    document.addEventListener('selectstart', disableEvent)
   }
 
-  update (data) {
-    this.data = data
+  function resize () {
+    const param = isVertical()
+      ? { height: document.body.scrollHeight + 'px' }
+      : { width:  document.body.scrollWidth  + 'px' }
 
-    // Orientation
-    this.dir = data.orientation === 'horizontal' ? 'h' : 'v'
-    this.ruler.classList.toggle('--v--', this.dir === 'v')
-    this.ruler.classList.toggle('--h--', this.dir === 'h')
-    this.resize()
-
-    // Position
-    this.position({ x: data.position, y: data.position })
-
-    // Visibility
-    this.ruler.style.display = data.active ? 'block' : 'none'
-
-    // Color
-    this.ruler.style.backgroundColor = data.color
-    this.label.style.backgroundColor = data.color
-    this.ruler.style.opacity = data.opacity / 100
+    Object.assign(node.style, param)
   }
 
-  resize () {
-    this.ruler.style.height = this.dir === 'h' ? '1px' : `${document.body.clientHeight}px`
-    this.ruler.style.width  = this.dir === 'v' ? '1px' : `${document.body.clientWidth}px`
+  // PUBLIC API ---------------------------------------------------------------
+  function id () {
+    return node.id.replace(EXT_PREFIX, '')
   }
 
-  position (point) {
-    this.ruler.style.left  = this.dir === 'h' ?          '0px' : `${point.x}px`
-    this.ruler.style.top   = this.dir === 'v' ?          '0px' : `${point.y}px`
-    this.label.textContent = this.dir === 'h' ? `${point.y}px` : `${point.x}px`
-    this.data.position     = this.dir === 'h' ?    point.y     :    point.x
+  function update (param) {
+    const isV    = param.orientation === 'vertical'
+    const top    =  isV ? '0px' : normalize(param.position, '0px')
+    const left   = !isV ? '0px' : normalize(param.position, '0px')
+    const width  = !isV ? document.body.scrollWidth  + 'px' : normalize(param.thickness, '0px')
+    const height =  isV ? document.body.scrollHeight + 'px' : normalize(param.thickness, '0px')
+
+    node.classList.toggle('--ext--vertical',    isV)
+    node.classList.toggle('--ext--horizontal', !isV)
+
+    Object.assign(node.style, {
+      cursor: isV ? 'col-resize' : 'row-resize',
+
+      top, left, width, height,
+
+      color: param.color,
+      opacity: param.opacity
+    })
   }
 
-  remove () {
-    this.evt.stopDrag()
-    this.ruler.removeEventListener('mousedown', this.evt.startDrag)
-    window.removeEventListener('mouseup', this.evt.stopDrag)
-    window.removeEventListener('resize',  this.evt.resize)
-    this.label.remove()
-    this.ruler.remove()
-    delete this.label
-    delete this.ruler
-    delete rulers[this.data.id]
+  function remove () {
+    window.removeEventListener('resize', resize)
+    node.removeEventListener('mousedown', startDrag)
+    node.remove()
   }
+
+  function add (param) {
+    node = document.createElement('div')
+    node.className = `${EXT_PREFIX}ruler`
+    node.id = `${EXT_PREFIX}ruler-${RULER.all().length + 1}`
+
+    update(param)
+    document.body.append(node)
+
+    node.addEventListener('mousedown', startDrag)
+    window.addEventListener('resize', resize)
+  }
+
+  return { id, add, update, remove }
 }
 
-// INTERACTION
-// ----------------------------------------------------------------------------
+RULER.get = id => {
+  return RULER(document.getElementById(`${EXT_PREFIX}${id}`))
+}
 
-const point  = { x: 0, y: 0}
-
-window.addEventListener('mousemove', (e) => {
-  point.x = e.pageX
-  point.y = e.pageY
-})
-
-window.addEventListener('scroll', (e) => {
-  point.x = e.pageX + document.documentElement.clientWidth  / 2
-  point.y = e.pageY + document.documentElement.clientHeight / 2
-})
+RULER.all = () => {
+  return [...document.body.querySelectorAll(`.${EXT_PREFIX}ruler`)]
+}

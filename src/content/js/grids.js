@@ -1,120 +1,119 @@
+function innerGRID (param) {
+  const isVertical = param.orientation === 'vertical'
+  const col = +param.columns > 0 ? +param.columns : 1
+  const gap = normalize(param.gutter, '1px')
+  const mrg = normalize(param.margin, '0px')
+  let x = normalize(param.x, '100%')
+  let y = normalize(param.y, '100%')
 
-// HELPERS
-// ----------------------------------------------------------------------------
+  const grid = document
+    .createRange()
+    .createContextualFragment(`
+      <div class="--ext--inner">
+        <div class="--ext--margin" style="
+          ${isVertical ? 'width' : 'height'}: ${mrg};
+          ${isVertical ? 'left'  : 'top'   }: 0px;
+          transform: ${isVertical ? `translateX(-${mrg})` : `translateY(-${mrg})` };
+        "></div>
+        <div class="--ext--column"></div>
+        ${Array(col-1).fill(`
+        <div class="--ext--gutter" style="${isVertical ? 'width' : 'height'}:${gap}"></div>
+        <div class="--ext--column"></div>
+        `).join('')}
+        <div class="--ext--margin" style="
+          ${isVertical ? 'width' : 'height'}: ${mrg};
+          ${isVertical ? 'right' : 'bottom'}: 0px;
+          transform: ${isVertical ? `translateX(${mrg})` : `translateY(${mrg})` };
+        "></div>
+      </div>
+    `).children[0]
 
-// Turn any template strings into an SVG data URI
-function svguri (str, ...args) {
-  const data = str.reduce((arr, s, i) => {
-    arr.push(s)
-    if (args[i]) { arr.push(args[i]) }
-    return arr
-  }, [])
-    .join('')
-    .replace(/\s+/g,    ' ')
-    .replace(/>\s*</g, '><')
-    .replace(/>/g,    '%3E')
-    .replace(/</g,    '%3C')
-    .replace(/#/g,    '%23')
-    .trim()
+  grid.classList.toggle('--ext--vertical',    isVertical)
+  grid.classList.toggle('--ext--horizontal', !isVertical)
 
-  return `url('data:image/svg+xml,${data}')`
+  Object.assign(grid.style, {
+    opacity: param.opacity,
+    color:   param.color,
+    width:   normalize(param.width,  '100%'),
+    height:  normalize(param.height, '100%'),
+    top:  (y === 'top')    ? '0px' :
+          (y === 'center') ? '50%' :
+          (y === 'bottom') ? ''    : y,
+    left: (x === 'left')   ? '0px' :
+          (x === 'center') ? '50%' :
+          (x === 'right')  ? ''    : x,
+    right:  (x === 'right')  ? '0px' : '',
+    bottom: (y === 'bottom') ? '0px' : '',
+    transform: `translate(${
+      x === 'center' ? '-50%' : '0'},${
+      y === 'center' ? '-50%' : '0'})`
+  })
+
+  return grid
 }
 
-function bgColumn (data) {
-  const { w, wg, wwg, color, opacity } = data
+const GRID = node => {
+  // PRIVATE FUNTIONS ---------------------------------------------------------
+  function columnSize () {
+    const col = node.querySelector(`.${EXT_PREFIX}column`)
+    const inner = node.querySelector(`.${EXT_PREFIX}inner`)
 
-  return svguri`
-    <svg xmlns="http://www.w3.org/2000/svg"
-         width="${wwg}" height="${wwg}"
-         viewBox="0 0 ${wwg} ${wwg}">
-      <rect x="0" y="0"
-            width="${w}" height="${wwg}"
-            opacity="${opacity/4}" fill="${color}" />
-      <rect x="${w}" y="0"
-            width="${wg}" height="${wwg}"
-            opacity="${opacity}" fill="${color}" />
-    </svg>`
+    return getComputedStyle(col)[
+      inner.classList.contains(`${EXT_PREFIX}vertical`) ? 'width' : 'height'
+    ]
+  }
+
+  function resize () {
+    node.style.width  = document.body.scrollWidth  + 'px'
+    node.style.height = document.body.scrollHeight + 'px'
+    notify()
+  }
+
+  // PUBLIC API ---------------------------------------------------------------
+  function id () {
+    return node.id.replace(EXT_PREFIX, '')
+  }
+
+  function notify () {
+    CONNECTION.postMessage({
+      action: 'UPDATE_GRID', id: id(),
+      data: {
+        size: columnSize()
+      }
+    })
+  }
+
+  function update (param) {
+    node.style.width  = document.body.scrollWidth  + 'px'
+    node.style.height = document.body.scrollHeight + 'px'
+
+    while (node.firstChild) { node.removeChild(node.firstChild) }
+    node.append(innerGRID(param))
+  }
+
+  function remove () {
+    window.removeEventListener('resize', resize)
+    node.remove()
+  }
+
+  function add (param) {
+    node = document.createElement('div')
+    node.className = `${EXT_PREFIX}grid`
+    node.id = `${EXT_PREFIX}grid-${GRID.all().length + 1}`
+
+    update(param)
+    document.body.append(node)
+    window.addEventListener('resize', resize)
+    notify()
+  }
+
+  return { id, add, update, remove, notify }
 }
 
-function bgRow (data) {
-  const { h, hg, hhg, color, opacity } = data
-
-  return svguri`
-    <svg xmlns="http://www.w3.org/2000/svg"
-         width="${hhg}" height="${hhg}"
-         viewBox="0 0 ${hhg} ${hhg}">
-      <rect x="0" y="0"
-            width="${hhg}" height="${h}"
-            opacity="${opacity/3}" fill="${color}" />
-      <rect x="0" y="${h}"
-            width="${hhg}" height="${hg}"
-            opacity="${opacity}" fill="${color}" />
-    </svg>`
+GRID.get = id => {
+  return GRID(document.getElementById(`${EXT_PREFIX}${id}`))
 }
 
-// Grid manager class definition
-// ----------------------------------------------------------------------------
-class Grid {
-  constructor (id) {
-    this.grid = document.querySelector(`#${id} .--position--`)
-
-    if (!this.grid) {
-      const parent = document.createElement('div')
-      parent.id = id
-      parent.className = '--grid--'
-      this.grid = document.createElement('div')
-      this.grid.className = '--position--'
-
-      parent.prepend(this.grid)
-      document.body.prepend(parent)
-    }
-  }
-
-  remove () {
-    this.grid.parentElement.remove()
-  }
-
-  update (data) {
-    if (!this.grid) { return }
-
-    const color   = data.color
-
-    // Set up grid pattern as CSS background images
-    const w    = data.colSize > 0 ? data.colSize : 0
-    const wg   = w > 0 ? data.colGutter : 0
-    const wwg  = w + wg
-    const h    = data.rowSize > 0 ? data.rowSize : 0
-    const hg   = h > 0 ? data.rowGutter : 0
-    const hhg  = h + hg
-
-    const opacity = data.opacity / 100
-
-    const ci  = w>0 ? bgColumn({w,wg,wwg,color,opacity}) : 'none'
-    const ri  = h>0 ? bgRow({h,hg,hhg,color,opacity}) : 'none'
-    const bgi = `${ci}, ${ri}`
-
-    // Adjust size of the layer grid based on the number of line and column to display
-    const width  = data.colNumber > 0 ? (wwg * data.colNumber + wg * (data.colOutside ? 1 : -1)) : 0
-    const height = data.rowNumber > 0 ? (hhg * data.rowNumber + hg * (data.rowOutside ? 1 : -1)) : 0
-
-    const bgp = `${data.colOutside ? wg : 0}px 0, 0 ${data.rowOutside ? hg : 0}px`
-
-    // Set up style accordingly
-    this.grid.style.display = data.active ? 'block' : 'none'
-
-    this.grid.style.backgroundImage    = bgi
-    this.grid.style.backgroundPosition = bgp
-    this.grid.style.width   = width  > 0 ? `${width}px`  : null
-    this.grid.style.height  = height > 0 ? `${height}px` : null
-
-    this.grid.style.left = data.colPos > 0 ? `${data.colPos}px` : null
-    this.grid.style.top  = data.rowPos > 0 ? `${data.rowPos}px` : null
-
-    this.grid.classList.toggle('--left--',   data.colPos === 'left')
-    this.grid.classList.toggle('--center--', data.colPos === 'center')
-    this.grid.classList.toggle('--right--',  data.colPos === 'right')
-    this.grid.classList.toggle('--top--',    data.rowPos === 'top')
-    this.grid.classList.toggle('--middle--', data.rowPos === 'center')
-    this.grid.classList.toggle('--bottom--', data.rowPos === 'bottom')
-  }
+GRID.all = () => {
+  return document.body.querySelectorAll(`.${EXT_PREFIX}grid`)
 }
