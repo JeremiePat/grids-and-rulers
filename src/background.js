@@ -1,132 +1,59 @@
+// This script is here to allows connection between devtools and
+// theire related inspected tab, it would be a thousand time easier
+// if we could have an API such as browser.devtools.inspectesWindow.connect()
+// rather than having to do all this mess!
 
-// Keep track of which tab is connected to which devtool channel
+// connect a devtools port with a tab port
+function connect (dev, tab) {
+  const tabMessage = tab.postMessage.bind(tab)
+  const devMessage = dev.postMessage.bind(dev)
+
+  // Message from the devtools are channeled to the inspected tab
+  // and message from the inspected tab are channeled to the devtools
+  dev.onMessage.addListener(tabMessage)
+  tab.onMessage.addListener(devMessage)
+
+  // When the tab disconnect, we make sure that we broke the link with the
+  // devtools port to avoid error while trying to send message to a dead port
+  tab.onDisconnect.addListener(() => {
+    dev.onMessage.removeListener(tabMessage)
+    tab.onMessage.removeListener(devMessage)
+  })
+
+  // When the devtools close, it's not necessary
+  // to keep the inspected tab connection alive
+  dev.onDisconnect.addListener(() => {
+    tab.disconnect()
+  })
+}
+
+// Wait for devtools incoming connections
 // ----------------------------------------------------------------------------
-const connections = {}
+browser.runtime.onConnect.addListener(async dev => {
+  const tabId = Number(dev.name)
+  const tab   = browser.tabs.connect(tabId, {name: dev.name})
 
+  connect(dev, tab)
 
-// Keep track of data shared between tabs and devtools. Data must be trashed
-// only when the tab is closed because devtools can be open en closed at will
-// and we want grids and rulers to be peristant
-const data = {}
+  // We make sure to reconnect the devtools with
+  // the inspected tab once the tab has been fully reloaded
+  // We wait for full reload because the content script can
+  // inject DOM node within the inspected tab.
+  function reconnect (id, info) {
+    if (id !== tabId) { return } // Not the right tab
+    if (info.status !== 'complete') { return } // Not fully loaded yet
 
+    // We reconnect the tab
+    const tab = browser.tabs.connect(id, {name: dev.name})
+    connect(dev, tab)
 
-// Listen for incoming message from devtools
-// ----------------------------------------------------------------------------
-browser.runtime.onConnect.addListener((port) => {
-  const tabId = Number(port.name.split('-')[1])
-  connections[tabId] = port
-
-  // Route messages to the target tab content script
-  function message (msg) {
-    if (msg.action === 'ADD_GRID'
-    ||  msg.action === 'UPDATE_GRID_SOFT'
-    ||  msg.action === 'UPDATE_GRID_HARD') {
-      data[tabId].grids[msg.data.id] = msg.data
-    }
-
-    else if (msg.action === 'ADD_RULER'
-    || msg.action === 'UPDATE_RULER_SOFT'
-    || msg.action === 'UPDATE_RULER_HARD') {
-      data[tabId].rulers[msg.data.id] = msg.data
-    }
-
-    else if (msg.action === 'REMOVE_GRID') {
-      delete data[tabId].grids[msg.data]
-    }
-
-    else if (msg.action === 'REMOVE_RULER') {
-      delete data[tabId].rulers[msg.data]
-    }
-
-    browser.tabs.sendMessage(tabId, msg)
+    // We notify the devtools that the tab has reload so that they can send
+    // back the necessary information to the tab content script.
+    dev.postMessage({ action: 'TAB_RELOADED' })
   }
 
-  // On disconnect we clean up the connection and send a
-  // final message to the content script of the associated tab
-  function disconnect (port) {
-    browser.tabs.sendMessage(tabId, {
-      action: 'CLOSE_DEVTOOLS'
-    })
-
-    port.onMessage.removeListener(message)
-    port.onMessage.removeListener(disconnect)
-    delete connections[tabId]
-  }
-
-  // Bound event handler
-  port.onMessage.addListener(message)
-  port.onDisconnect.addListener(disconnect)
-
-  // Send back data for the related Tab
-  if (data[tabId]) {
-    const grids  = data[tabId].grids
-    const rulers = data[tabId].rulers
-
-    Object.keys(grids).forEach(id => {
-      port.postMessage({ action: 'ADD_GRID', data: grids[id] })
-    })
-
-    Object.keys(rulers).forEach(id => {
-      port.postMessage({ action: 'ADD_RULER', data: rulers[id] })
-    })
-  } else {
-    data[tabId] = {
-      grids:  {},
-      rulers: {}
-    }
-  }
-})
-
-
-// Listen for incoming messages from tabs
-// ----------------------------------------------------------------------------
-browser.runtime.onMessage.addListener((request, sender) => {
-  if (!sender.tab) { return }
-
-  const tabId = sender.tab.id;
-
-  if (tabId in connections) {
-    // Route the message to the proper devtool channel
-    connections[tabId].postMessage(request);
-  }
-})
-
-
-// Listen for tabs load in order to reaply grids and rulers
-// ----------------------------------------------------------------------------
-browser.tabs.onUpdated.addListener((tabId, info) => {
-  if (info.status !== 'complete') { return }
-
-  if (data[tabId]) {
-    const grids  = data[tabId].grids
-    const rulers = data[tabId].rulers
-    const keys   = data[tabId].keys
-
-    if (grids) {
-      Object.keys(grids).forEach(id => {
-        browser.tabs.sendMessage(tabId, { action: 'ADD_GRID', data: grids[id] })
-      })
-    }
-
-    if (rulers) {
-      Object.keys(rulers).forEach(id => {
-        browser.tabs.sendMessage(tabId, { action: 'ADD_RULER', data: rulers[id] })
-      })
-    }
-
-    if (keys) {
-      Object.keys(keys).forEach(id => {
-        browser.tabs.sendMessage(tabId, { action: 'UPDATE_KEY', data: keys[id] })
-      })
-    }
-  }
-})
-
-
-// Listen for closing tabs in order to clear up stored data
-// ----------------------------------------------------------------------------
-browser.tabs.onRemoved.addListener(tabId => {
-  if (data[tabId]) {
-    delete data[tabId]
-  }
+  browser.tabs.onUpdated.addListener(reconnect)
+  dev.onDisconnect.addListener(() => {
+    browser.tabs.onUpdated.removeListener(reconnect)
+  })
 })
