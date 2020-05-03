@@ -1,5 +1,5 @@
 {
-  "extensionName":        { "message": "Grilles & Repères (test)" },
+  "extensionName":        { "message": "Grilles & Repères" },
   "extensionDescription": { "message": "Ajoutez des repères et des grilles à vos pages pour améliorer le développement de vos applications web" },
 
   "BtnAddRuler":          { "message": "Ajouter un repère" },
