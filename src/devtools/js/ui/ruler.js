@@ -5,7 +5,7 @@ const RGX_CALC = /^calc\(/
 
 // UTILS ----------------------------------------------------------------------
 const updateField = (node, data) => name => {
-  const input = document.getElementById(`${node.id}-${name}`)
+  const input = node.querySelector(`#${node.id}-${name}`)
   input.value = data[name]
   input.classList.toggle('large', RGX_CALC.test(data[name]))
 
@@ -65,11 +65,11 @@ function update (node, data) {
 // Extract all the values from a ruler DOM UI
 function data (node) {
   return {
-    orientation: document.getElementById(`${node.id}-orientation`).value.trim(),
-    thickness: document.getElementById(`${node.id}-thickness`).value.trim(),
-    position: document.getElementById(`${node.id}-position`).value.trim(),
-    opacity: document.getElementById(`${node.id}-opacity`).value.trim(),
-    color: document.getElementById(`${node.id}-color`).value.trim()
+    orientation: node.querySelector(`#${node.id}-orientation`).value.trim(),
+    thickness: node.querySelector(`#${node.id}-thickness`).value.trim(),
+    position: node.querySelector(`#${node.id}-position`).value.trim(),
+    opacity: node.querySelector(`#${node.id}-opacity`).value.trim(),
+    color: node.querySelector(`#${node.id}-color`).value.trim()
   }
 }
 

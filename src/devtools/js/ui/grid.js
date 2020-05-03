@@ -5,7 +5,7 @@ const RGX_CALC = /^calc\(/
 
 // UTILS ----------------------------------------------------------------------
 const updateField = (node, param) => name => {
-  const input = document.getElementById(`${node.id}-${name}`)
+  const input = node.querySelector(`#${node.id}-${name}`)
   input.value = param[name]
   input.classList.toggle('large', RGX_CALC.test(param[name]))
 
@@ -80,17 +80,17 @@ function update (node, param) {
 // Extract all the values from a grid DOM UI
 function data (node) {
   return {
-    orientation: document.getElementById(`${node.id}-orientation`).value.trim(),
-    columns: document.getElementById(`${node.id}-columns`).value.trim(),
-    opacity: document.getElementById(`${node.id}-opacity`).value.trim(),
-    gutter: document.getElementById(`${node.id}-gutter`).value.trim(),
-    margin: document.getElementById(`${node.id}-margin`).value.trim(),
-    height: document.getElementById(`${node.id}-height`).value.trim(),
-    width: document.getElementById(`${node.id}-width`).value.trim(),
-    color: document.getElementById(`${node.id}-color`).value.trim(),
-    size: document.getElementById(`${node.id}-size`).value.trim(),
-    x: document.getElementById(`${node.id}-x`).value.trim(),
-    y: document.getElementById(`${node.id}-y`).value.trim()
+    orientation: node.querySelector(`#${node.id}-orientation`).value.trim(),
+    columns: node.querySelector(`#${node.id}-columns`).value.trim(),
+    opacity: node.querySelector(`#${node.id}-opacity`).value.trim(),
+    gutter: node.querySelector(`#${node.id}-gutter`).value.trim(),
+    margin: node.querySelector(`#${node.id}-margin`).value.trim(),
+    height: node.querySelector(`#${node.id}-height`).value.trim(),
+    width: node.querySelector(`#${node.id}-width`).value.trim(),
+    color: node.querySelector(`#${node.id}-color`).value.trim(),
+    size: node.querySelector(`#${node.id}-size`).value.trim(),
+    x: node.querySelector(`#${node.id}-x`).value.trim(),
+    y: node.querySelector(`#${node.id}-y`).value.trim()
   }
 }
 
