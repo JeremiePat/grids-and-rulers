@@ -3,7 +3,7 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
 
-  "version": "1.0",
+  "version": "2.0",
   "default_locale": "en",
 
   "icons": {
@@ -16,7 +16,7 @@
   },
 
   "permissions": [
-    "storage"
+    "storage", "unlimitedStorage"
   ],
 
   "background": {
@@ -30,10 +30,9 @@
     "matches": ["<all_urls>"],
     "js": [
       "lib/chrome-polyfill.js",
-      "content/js/keys.js",
       "content/js/grids.js",
       "content/js/rulers.js",
-      "content/message.js"
+      "content/main.js"
     ],
     "css": [
       "content/css/grids.css",
