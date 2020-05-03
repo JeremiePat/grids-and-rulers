@@ -4,5 +4,27 @@
 <script src="../lib/chrome-polyfill.js"></script>
 <script src="./js/styles.js"></script>
 <script src="./js/panel.js" type="module"></script>
-<script src="./js/shortcut.js" type="module"></script>
 
+<main>
+<header>
+  <button id="addRuler" value="ruler">Add ruler</button>
+  <button id="addGrid" value="grid">Add grid</button>
+  <label for="quickSelect">
+    <span>Quick access:</span>
+    <select id="quickSelect">
+      <optgroup label="Rulers"></optgroup>
+      <optgroup label="Grids"></optgroup>
+    </select>
+  </label>
+</header>
+
+<section id="ruler"></section>
+<section id="grid"></section>
+
+<footer>
+  <label for="globalGrid">
+    <input type="checkbox" id="globalGrid" />
+    <span>Preserve settings accross domains</span>
+  </label>
+</footer>
+</main>
