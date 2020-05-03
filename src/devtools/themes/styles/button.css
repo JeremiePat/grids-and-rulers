@@ -1,0 +1,47 @@
+/* ------------------------------------------------------------------------- *
+ * NORMALIZE BASIC HTML BUTTON                                               *
+ * ------------------------------------------------------------------------- */
+button {
+  /* Font & Text */
+  font-size: inherit;
+  line-height: 1.55;
+  color: var(--btn-color);
+
+  /* Box model */
+  padding: 0 0.5em;
+
+  /* Border & Background */
+  border: 2px solid var(--btn-border);
+  border-radius: .2rem;
+  background-color: var(--btn-bg);
+
+  /* Position */
+  vertical-align: middle;
+
+  /* Other */
+  cursor: pointer;
+}
+
+button#addGrid { margin-right: 1em; }
+
+button.delete {
+ font-weight: bold;
+ color: var(--btn-color-important);
+}
+
+button:hover,
+button:focus {
+ border-color: var(--btn-border-highlight);
+ background-color: var(--btn-bg-highlight);
+}
+
+button:active {
+ background-color: var(--btn-bg);
+}
+
+button.delete:hover,
+button.delete:focus {
+ color: var(--btn-color-important-highlight);
+ border-color: var(--btn-border-important-highlight);
+ background-color: var(--btn-bg-important-highlight);
+}

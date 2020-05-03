@@ -1,30 +1,16 @@
+:root {
+  scroll-behavior: smooth;
+}
+
 body {
   /* Box model */
   padding: 0;
   margin:  0;
 
   /* Font & Text */
-  font: .7rem sans-serif;
-  color: var(--text-primary);
+  font: .8em sans-serif;
+  color: var(--text-color);
 
   /* Border & Background */
-  background-color: var(--bg-lighter);
-}
-
-article:target {
-  display: block;
-}
-
-article {
-  display: none;
-}
-
-section {
-  width: 100%;
-  overflow: auto;
-}
-
-p {
-  margin: 1rem;
-  max-width: 30rem;
+  background-color: var(--text-bg);
 }

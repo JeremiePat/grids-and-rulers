@@ -1,222 +1,132 @@
-
 /* ------------------------------------------------------------------------- *
- * DATA UI LAYOUT                                                            *
+ * LAYOUT                                                                    *
  * ------------------------------------------------------------------------- */
-
-.grid {
-  /* Grid model */
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, auto)) 1fr;
-  grid-auto-rows: auto;
-
-  /* Font & Text */
+label {
+  display: block;
   white-space: nowrap;
-
-  /* Border & Background */
-  border-bottom: var(--large-border);
 }
 
-.grid .head {
-  /* Grid model */
-  grid-column: 1 / -1;
+/* HEADER ------------------------------------------------------------------ */
+header {
+  /* Position */
+  position: sticky;
+  top: 0;
+  z-index: 1;
 
-  /* Border & Background */
-  border-top: var(--large-border);
+  /* Font & Text*/
+  line-height: 2;
+
+  /* Box Model */
+  padding: .25em 2em .25em 5em;
+
+  /* Backgroudn & Border */
+  background-color: var(--text-bg);
+  border-bottom: 1px solid var(--btn-border-highlight);
 }
 
-.grid .cell {
-  /* Box model */
-  padding: 0 .25rem;
+header label {
+  display: inline-block;
+}
 
+/* FOOTER ------------------------------------------------------------------ */
+footer {
   /* Font & Text */
-  line-height: 2rem;
+  line-height: 1.5;
 
-  /* Border & Background */
-  border-top: var(--border);
+  /* Box Model */
+  padding: .25em 2em .25em 5em;
 }
 
-.grid .first {
+footer label {
+  max-width: 40em;
+  white-space: normal;
+}
+
+footer small {
+  font-size: .9em;
+  font-style: italic;
+}
+
+/* MAIN BODY --------------------------------------------------------------- */
+section {
+  border-bottom: 1px solid var(--btn-border-highlight);
+}
+
+section:empty { display: none; }
+section .row  { display: flex; }
+section .row:not(:first-child) { border-top: 1px solid var(--btn-border); }
+section .row:hover { background-color: var(--text-bg-hover); }
+section .row.selected { background-color: var(--text-bg-focus); }
+section .row.disabled { color: var(--text-color-disable); }
+
+section .row > div {
+  /* Font & Text */
+  line-height: 1.5;
+
+  /* Box Model */
+  padding: .25em .5em;
+}
+
+section .head {
   /* Font & Text */
   font-weight: bold;
   text-align: right;
+  white-space: nowrap;
+
+  /* Box Model */
+  width: 5em;
 }
 
-.grid .last label {
-  /* Font & Text */
+section .disabled .head {
+  text-decoration-line: line-through;
+}
+
+section .param {
+  flex: 1;
+
+  display: flex;
+  flex-flow: row wrap;
+}
+
+section .param label,
+section .color label {
+  display: block;
+  margin-right: .5em;
+}
+
+section .color {
+  text-align: right;
+}
+
+section .color label {
+  display: inline-block;
+}
+
+section .disabled input[type="color"] {
+  opacity: .2;
+}
+
+section .end {
+  width: 2em;
+  text-align: right;
+}
+
+section .group {
+  display:flex;
+  flex-flow: row wrap;
   white-space: nowrap;
 }
 
-.grid.keys .last {
-  /* Grid model */
-  grid-column: 2/-1;
-}
-
-.grid.keys input[type=text] {
-  /* Box model */
-  width: 1rem;
-
-  /* Font & Text */
-  text-align: center
-}
-
-/* Wide devtools window ---------------------------------------------------- */
-@media (min-width: 72rem) {
-  .grid {
-    /* Grid model */
-    grid-template-columns: repeat(5, minmax(0, auto)) 1fr;
-  }
-
-  .grid .last {
-    /* Border & Background */
-    border-right: var(--border);
-  }
-}
-
-/* Small devtools window --------------------------------------------------- */
-@media (max-width: 36rem) {
-  .grid {
-    /* Grid model */
-    grid-template-columns: auto 1fr;
-  }
-
-  .grid .last {
-    /* Grid model */
-    grid-column: 2/-1;
-
-    /* Border & Background */
-    border-top: none;
-  }
-
-  .grid.keys .last {
-    /* Border & Background */
-    border-top: var(--border);
-  }
-
-  .grid.keys .first {
-    /* Font & Text */
-    text-align: right;
-  }
-}
-
-/* Very small devtools window ---------------------------------------------- */
-@media (max-width: 22rem) {
-  .grid {
-    /* Grid model */
-    grid-template-columns: 1fr;
-  }
-
-  .grid .cell {
-    /* Font & Text */
-    text-align: center;
-
-    /* Border & Background */
-    border-top: none;
-  }
-
-  .grid .first {
-    /* Border & Background */
-    border-top: var(--border);
-  }
-
-  .grid.keys .last {
-    /* Border & Background */
-    border-top: none;
-  }
-
-  .grid.keys .first {
-    /* Font & Text */
-    text-align: center;
-  }
-
-  .grid .last,
-  .grid.keys .last{
-    /* Grid model */
-    grid-column: auto;
-
-    /* Font & Text */
-    white-space: normal;
-  }
-}
-
-
-/* ------------------------------------------------------------------------- *
- * FLEXIBLE CELL LAYOUT                                                            *
- * ------------------------------------------------------------------------- */
-
-.flex {
-  /* Box model */
-  display: flex;
-
-  /* Border & Background */
-  background-color: var(--bg-darker);
-}
-
-.flex label {
-  /* Box model */
-  padding: 0 0 0 .5rem;
-
-  /* Font & Text */
-  line-height: 2rem;
-}
-
-.flex .stretch {
-  /* Flex model */
+section .group > span {
   flex: 1;
-
-  /* Font & Text */
-  text-align: left;
+  text-align: right;
 }
 
-/* Small devtools window --------------------------------------------------- */
-@media (max-width: 36rem) {
-  .flex.large {
-    /* Grid model */
-    display: grid;
-    grid-template-columns: auto auto 1fr auto;
-    grid-template-rows: auto auto;
-  }
-
-  .flex button.toggle {
-    /* Grid model */
-    grid-row: 1/-1;
-    grid-column: 1/2;
-
-    /* Box model */
-    height: auto;
-
-    /* Border & Background */
-    background-position: center .25rem;
-  }
-
-  .flex button.delete {
-    /* Grid model */
-    grid-row: 1/-1;
-    grid-column: 4/5;
-
-    /* Box model */
-    height: auto;
-
-    /* Border & Background */
-    background-position: center .5rem;
-  }
-}
-
-/* Very small devtools window ---------------------------------------------- */
-@media (max-width: 22rem) {
-  .flex, .flex.large {
-    /* Grid model */
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-template-rows: repeat(2, auto);
-  }
-
-  .flex.large {
-    /* Grid model */
-    grid-template-rows: repeat(4, auto);
-  }
-
-  .flex button.delete {
-    /* Grid model */
-    grid-column: 3/4;
-  }
+@media (max-width: 27em) {
+  header, footer { padding: .25em .5em; }
+  header label   { white-space: normal; }
+  section .row   { flex-direction: column; }
+  section .head  { width: auto; text-align: center; }
+  section .param { justify-content: flex-end; }
+  section .row .end { width: auto; text-align: right; padding: .25em 1em; }
 }
