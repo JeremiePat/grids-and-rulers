@@ -1,5 +1,5 @@
 {
-  "extensionName":        { "message": "Grids & Rulers (test)" },
+  "extensionName":        { "message": "Grids & Rulers" },
   "extensionDescription": { "message": "Create grid and ruler overlays to help develop your web applications" },
 
   "BtnAddRuler":          { "message": "Add ruler" },
