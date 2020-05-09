@@ -155,6 +155,7 @@ async function initPanel () {
 
   ['ruler', 'grid'].forEach(area => {
     const parent = document.getElementById(area)
+    message.send({ action: `RESET_${area.toUpperCase()}`, data: data[area] })
 
     data[area].forEach((param, index) => {
       const node = UI[area].create(index + 1)
@@ -193,9 +194,6 @@ message.listen(async ({action, id, data}) => {
       CACHE = new Store()
       CACHE.data = data
       await CACHE.save()
-
-      message.send({ action: 'RESET_RULER', data: data.ruler })
-      message.send({ action: 'RESET_GRID',  data: data.grid })
     } else {
       CACHE = new Store()
     }
