@@ -1,132 +1,212 @@
 /* ------------------------------------------------------------------------- *
- * LAYOUT                                                                    *
+ * BASE LAYOUT                                                               *
  * ------------------------------------------------------------------------- */
-label {
-  display: block;
-  white-space: nowrap;
-}
+article:empty { display:none; }
 
-/* HEADER ------------------------------------------------------------------ */
-header {
-  /* Position */
-  position: sticky;
-  top: 0;
-  z-index: 1;
-
-  /* Font & Text*/
-  line-height: 2;
-
-  /* Box Model */
-  padding: .25em 2em .25em 5em;
-
-  /* Backgroudn & Border */
-  background-color: var(--text-bg);
-  border-bottom: 1px solid var(--btn-border-highlight);
-}
-
-header label {
-  display: inline-block;
-}
-
-/* FOOTER ------------------------------------------------------------------ */
-footer {
-  /* Font & Text */
-  line-height: 1.5;
-
-  /* Box Model */
-  padding: .25em 2em .25em 5em;
-}
-
-footer label {
-  max-width: 40em;
-  white-space: normal;
-}
-
-footer small {
-  font-size: .9em;
-  font-style: italic;
-}
-
-/* MAIN BODY --------------------------------------------------------------- */
-section {
-  border-bottom: 1px solid var(--btn-border-highlight);
-}
-
-section:empty { display: none; }
-section .row  { display: flex; }
-section .row:not(:first-child) { border-top: 1px solid var(--btn-border); }
-section .row:hover { background-color: var(--text-bg-hover); }
-section .row.selected { background-color: var(--text-bg-focus); }
-section .row.disabled { color: var(--text-color-disable); }
-
-section .row > div {
-  /* Font & Text */
-  line-height: 1.5;
-
-  /* Box Model */
-  padding: .25em .5em;
-}
-
-section .head {
-  /* Font & Text */
-  font-weight: bold;
-  text-align: right;
-  white-space: nowrap;
-
-  /* Box Model */
-  width: 5em;
-}
-
-section .disabled .head {
-  text-decoration-line: line-through;
-}
-
-section .param {
-  flex: 1;
-
+article {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column;
 }
 
-section .param label,
-section .color label {
-  display: block;
-  margin-right: .5em;
-}
+section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 .25rem;
 
-section .color {
-  text-align: right;
-}
-
-section .color label {
-  display: inline-block;
-}
-
-section .disabled input[type="color"] {
-  opacity: .2;
-}
-
-section .end {
-  width: 2em;
-  text-align: right;
-}
-
-section .group {
-  display:flex;
-  flex-flow: row wrap;
-  white-space: nowrap;
-}
-
-section .group > span {
   flex: 1;
-  text-align: right;
+  min-width: 8rem;
 }
 
-@media (max-width: 27em) {
-  header, footer { padding: .25em .5em; }
-  header label   { white-space: normal; }
-  section .row   { flex-direction: column; }
-  section .head  { width: auto; text-align: center; }
-  section .param { justify-content: flex-end; }
-  section .row .end { width: auto; text-align: right; padding: .25em 1em; }
+section > * { display: flex; grid-column: 1 / span 2; }
+section label input { flex: 1; min-width: 1rem; }
+section label span { width: 3.5rem; text-align: right; }
+section label.x { grid-column: 1 / 2 }
+section label.y { grid-column: 2 / 3 }
+section label.y span,
+section label.x span { width: auto; }
+section .orientation span { white-space: nowrap; }
+
+/* ------------------------------------------------------------------------- *
+ * RULER LAYOUT                                                              *
+ * ------------------------------------------------------------------------- */
+#ruler section {
+  grid-template-columns: 1.5fr 2fr;
+}
+
+@media (min-width: 12rem) {
+  #ruler label span { width: auto; }
+
+  /*----------*-----------*
+   | title                |
+   *----------*-----------*
+   | orientation          |
+   *----------*-----------*
+   | position | thickness |
+   *----------*-----------*
+   | action               |
+   *----------*-----------*/
+
+  #ruler .position  { grid-column: 1 / 2 ; }
+  #ruler .thickness { grid-column: 2 / 3 ; }
+}
+
+@media (min-width: 18rem) {
+  #ruler select, #ruler button { width: auto; }
+  #ruler label input { width: 2.5rem; }
+  #ruler .thickness span { width: 3.5rem; }
+
+  /*----------*-----------*-------------*
+   | title                | orientation |
+   *----------*-----------*-------------*
+   | position | thickness |      action |
+   *----------*-----------*-------------*/
+
+  #ruler section  { grid-template-columns: 1fr 1.5fr auto; }
+
+  #ruler .title       { grid-column: 1 / span 2; }
+  #ruler .orientation { grid-column: 3 / span 1; justify-content: flex-end; }
+  #ruler .position    { grid-column: 1 / span 1; }
+  #ruler .thickness   { grid-column: 2 / span 1; }
+  #ruler .action      { grid-column: 3 / span 1; justify-content: flex-end; }
+}
+
+@media (min-width: 24.5rem) {
+  #ruler section  { grid-template-columns: auto 1fr 1.5fr 1.25fr; }
+
+  /*-------------*----------*-----------*--------*
+   | title                                       |
+   *-------------*----------*-----------*--------*
+   | orientation | position | thickness | action |
+   *-------------*----------*-----------*--------*/
+
+  #ruler .title       { grid-column: 1 / span 4; }
+  #ruler .orientation { grid-column: 1 / span 1; }
+  #ruler .position    { grid-column: 2 / span 1; }
+  #ruler .thickness   { grid-column: 3 / span 1; }
+  #ruler .action      { grid-column: 4 / span 1; }
+}
+
+@media (min-width: 32rem) {
+  #ruler section  { grid-template-columns: repeat(2, auto) 1fr 1.75fr 2fr; }
+
+  /*-------*-------------*----------*-----------*--------*
+   | title | orientation | position | thickness | action |
+   *-------*-------------*----------*-----------*--------*/
+
+  #ruler .title,
+  #ruler .orientation,
+  #ruler .position,
+  #ruler .thickness { grid-column: auto; }
+  #ruler .action { grid-column: auto; grid-row: auto; justify-content: flex-end; }
+}
+
+/* ------------------------------------------------------------------------- *
+ * GRID LAYOUT                                                               *
+ * ------------------------------------------------------------------------- */
+@media (max-width: 12rem) { #grid small { display: none; }}
+@media (min-width: 12rem) {
+  #grid label span { width: auto; }
+
+  #grid .gutter span,
+  #grid .width span,
+  #grid .height span { width: 3.5rem; }
+
+  #grid section { grid-template-columns: repeat(6, 1fr); }
+
+
+ /*--------*--------*
+  | title           |
+  *--------*--------*
+  | orientation     |
+  *--------*--------*
+  | gutter | margin |
+  *--------*--------*
+  | width  | x      |
+  *--------*--------*
+  | height | y      |
+  *--------*--------*
+  | action          |
+  *--------*--------*/
+
+  #grid .title       { grid-column: 1 / span 6; }
+  #grid .orientation { grid-column: 1 / span 6; }
+  #grid .gutter      { grid-column: 1 / span 3; }
+  #grid .margin      { grid-column: 4 / span 3; }
+  #grid .width       { grid-column: 1 / span 4; }
+  #grid .height      { grid-column: 1 / span 4; }
+  #grid .x           { grid-column: 5 / span 2; grid-row: 4 / span 1; }
+  #grid .y           { grid-column: 5 / span 2; }
+  #grid .action      { grid-column: 1 / span 6; }
+}
+
+@media (min-width: 19rem) {
+  #grid .margin span { width: 3.5rem; }
+
+  #grid section { grid-template-columns: 2fr 2fr 1fr; }
+
+ /*--------*--------*----*
+  | title  | orientation |
+  *--------*--------*----*
+  | gutter | width  | x  |
+  *--------*--------*----*
+  | margin | height | y  |
+  *--------*--------*----*
+  | action               |
+  *--------*--------*----*/
+
+  #grid .title       { grid-column: 1 / span 1; }
+  #grid .orientation { grid-column: 2 / span 2; }
+  #grid .gutter      { grid-column: 1 / span 1; grid-row: 2 / span 1; }
+  #grid .margin      { grid-column: 1 / span 1; grid-row: 3 / span 1; }
+  #grid .width       { grid-column: 2 / span 1; grid-row: 2 / span 1; }
+  #grid .height      { grid-column: 2 / span 1; grid-row: 3 / span 1; }
+  #grid .x           { grid-column: 3 / span 1; grid-row: 2 / span 1; }
+  #grid .y           { grid-column: 3 / span 1; grid-row: 3 / span 1; }
+  #grid .action      { grid-column: 1 / span 3; }
+
+}
+
+@media (min-width: 25rem) {
+  #grid button { width: auto; }
+  #grid label input { width: 2.5rem; }
+
+  #grid section { grid-template-columns: repeat(3, 1fr); }
+
+ /*--------*-------------*---------*
+  | title  | orientation | actions |
+  *--------*-------------*---------*
+  | gutter | width       | x       |
+  *--------*-------------*---------*
+  | margin | height      | y       |
+  *--------*-------------*---------*/
+
+  #grid .title       { grid-column: 1 / span 1; }
+  #grid .orientation { grid-column: 2 / span 1; }
+  #grid .gutter      { grid-column: 1 / span 1; grid-row: 2 / span 1; }
+  #grid .margin      { grid-column: 1 / span 1; grid-row: 3 / span 1; }
+  #grid .width       { grid-column: 2 / span 1; grid-row: 2 / span 1; }
+  #grid .height      { grid-column: 2 / span 1; grid-row: 3 / span 1; }
+  #grid .x           { grid-column: 3 / span 1; grid-row: 2 / span 1; }
+  #grid .y           { grid-column: 3 / span 1; grid-row: 3 / span 1; }
+  #grid .action      { grid-column: 3 / span 1; grid-row: 1 / span 1; justify-content: flex-end; }
+}
+
+@media (min-width: 35.5rem) {
+  #grid section { grid-template-columns: auto 2fr 2fr 1fr 3fr; }
+
+ /*-------------*--------*--------*---*--------*
+  | title       | gutter | width  | x | action |
+  *-------------*--------*--------*---*--------*
+  | orientation | margin | height | y |        |
+  *-------------*--------*--------*---*--------*/
+
+  #grid .title       { grid-column: 1 / span 1; }
+  #grid .orientation { grid-column: 1 / span 1; grid-row: 2 / span 1; }
+  #grid .gutter      { grid-column: 2 / span 1; grid-row: 1 / span 1; }
+  #grid .margin      { grid-column: 2 / span 1; grid-row: 2 / span 1; }
+  #grid .width       { grid-column: 3 / span 1; grid-row: 1 / span 1; }
+  #grid .height      { grid-column: 3 / span 1; grid-row: 2 / span 1; }
+  #grid .x           { grid-column: 4 / span 1; grid-row: 1 / span 1; }
+  #grid .y           { grid-column: 4 / span 1; grid-row: 2 / span 1; }
+  #grid .action      { grid-column: 5 / span 1; grid-row: 1 / span 1; justify-content: flex-end; }
 }
