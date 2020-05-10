@@ -1,60 +1,65 @@
 import html from '../utils/html.js'
+import normalize, { opacity } from "../utils/normalize.js";
 
 const _ = browser.i18n.getMessage
 const RGX_CALC = /^calc\(/
 
 // UTILS ----------------------------------------------------------------------
 const updateField = (node, data) => name => {
+  const value = normalize[name](data[name])
   const input = node.querySelector(`#${node.id}-${name}`)
-  input.value = data[name]
-  input.classList.toggle('large', RGX_CALC.test(data[name]))
+  input.value = value
+  input.classList.toggle('large', RGX_CALC.test(value))
 
   if (name === 'opacity') {
-    node.classList.toggle('disabled', +data.opacity === 0)
+    node.classList.toggle('disabled', value === '0%')
   } else if (name === 'orientation') {
     node.querySelector(`label[for="${node.id}-thickness"] span`).innerText =
-      data.orientation === 'horizontal' ? _('LabelHeight') : _('LabelWidth')
+      value === 'horizontal' ? _('LabelHeight') : _('LabelWidth')
     node.querySelector(`label[for="${node.id}-position"] span`).innerText =
-      data.orientation === 'horizontal' ? _('LabelY') : _('LabelX')
+      value === 'horizontal' ? _('LabelY') : _('LabelX')
   }
 }
 
 // PUBLIC API -----------------------------------------------------------------
 // Provide a list of all rulers DOM UI
 function all () {
-  return [...document.querySelectorAll(`#ruler .row`)]
+  return [...document.querySelectorAll(`#ruler section`)]
 }
 
 // Create a new ruler DOM UI
 function create (key) {
   return html`
-    <div class="row" id="ruler-${key}">
-      <div class="head">${_('CellRuler', [key])}</div>
-
-      <div class="param">
-        <label for="ruler-${key}-orientation">
-          ${_('LabelOrientation')}
-          <select id="ruler-${key}-orientation">
-            <option value="horizontal">${_('LabelHorizontal')}</option>
-            <option selected value="vertical">${_('LabelVertical')}</option>
-          </select>
-        </label>
-
-        <div class="group">
-          <span><label for="ruler-${key}-position"><span>${_('LabelX')}</span> <input value="50vw" id="ruler-${key}-position" /></label></span>
-          <span><label for="ruler-${key}-thickness"><span>${_('LabelWidth')}</span> <input value="1px" id="ruler-${key}-thickness" /></label></span>
-        </div>
+    <section id="ruler-${key}">
+      <div class="title">
+        <span>
+          ${_('CellRuler', [key])}
+          <input aria-label="${_('LabelColor')}" type="color" id="ruler-${key}-color" value="#ff0000">
+          <input aria-label="${_('LabelOpacity')}" class="opacity" id="ruler-${key}-opacity" value="40%">
+        </span>
       </div>
 
-      <div class="color">
-        <label for="ruler-${key}-color">${_('LabelColor')} <input type="color" value="#ff0000" id="ruler-${key}-color" /></label>
-        <label for="ruler-${key}-opacity">${_('LabelOpacity')} <input type="number" id="ruler-${key}-opacity" value="0.5" min="0" max="1" step="0.1" formnovalidate /></label>
+      <div class="orientation">
+        <select id="ruler-${key}-orientation" aria-label="${_('LabelOrientation')}">
+          <option value="vertical" selected>${_('LabelVertical')}</option>
+          <option value="horizontal">${_('LabelHorizontal')}</option>
+        </select>
       </div>
 
-      <div class="end">
-        <button title="${_('BtnDeleteRuler', key)}" value="ruler-${key}" class="delete">X</button>
+      <label class="position" for="ruler-${key}-position">
+        <span>${_('LabelX')}</span>
+        <input value="50vw" id="ruler-${key}-position" />
+      </label>
+
+      <label class="thickness" for="ruler-${key}-thickness">
+        <span>${_('LabelWidth')}</span>
+        <input value="1px" id="ruler-${key}-thickness" />
+      </label>
+
+      <div class="action">
+        <button title="${_('BtnDeleteRuler', key)}" value="ruler-${key}" class="delete">${_('LabelDelete')}</button>
       </div>
-    </div>`
+    </section>`
 }
 
 // Fill up a given ruler DOM UI with some data
