@@ -28,5 +28,9 @@
   "LabelRowSize":         { "message": "Computed value formula for rows: height - (gutter * (rows - 1)) / rows" },
   "LabelGutter":          { "message": "Gutter:" },
   "LabelMargin":          { "message": "Margin:" },
-  "LabelPreserve":        { "message": "Preserve settings accross domains <br>(<small>Grids and Rulers are preserved on a per domain basis, check that box to keep the same grid and rulers over all the domain browsed in thos tab while the dev tools are open</small>)."}
+  "LabelPreserve":        { "message": "Preserve settings accross domains <br><small>(Grids and Rulers are preserved on a per domain basis, check that box to keep the same grid and rulers over all the domain browsed in this tab while the dev tools are open.)</small>"},
+  "LabelDelete":          { "message": "Delete" },
+
+  "ValueColumn":          { "message": "Columns" },
+  "ValueRow":             { "message": "Rows"  }
 }

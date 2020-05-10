@@ -28,5 +28,9 @@
   "LabelRowSize":         { "message": "Formule pour la valeur calculée des lignes : height - (goutière * (lignes - 1)) / lignes" },
   "LabelGutter":          { "message": "Goutière :" },
   "LabelMargin":          { "message": "Marge :" },
-  "LabelPreserve":        { "message": "Conserver les paramètres d'un domaine à l'autre <br>(<small>Les grilles et repères sont préservés sur la base du domaine visité, cochez cette case pour garder vos grilles et repères sur tous les domaines que vous visterez dans cet onglet avec les outils de developpement ouverts</small>)."}
+  "LabelPreserve":        { "message": "Conserver les paramètres d'un domaine à l'autre <br><small>(Les grilles et repères sont préservés sur la base du domaine visité, cochez cette case pour garder vos grilles et repères sur tous les domaines que vous visterez dans cet onglet avec les outils de developpement ouverts.)</small>"},
+  "LabelDelete":          { "message": "Supprimer" },
+
+  "ValueColumn":          { "message": "Colones" },
+  "ValueRow":             { "message": "Lignes"  }
 }

@@ -54,9 +54,9 @@ async function updateQuickSelect () {
 async function onselect () {
   const data = await CACHE.get()
   const toggleNode = area => (node, i) => {
-    const opacity = +data[area][i].opacity
+    const opacity = data[area][i].opacity.trim()
     node.classList.toggle('selected', this.id === node.id)
-    node.classList.toggle('disabled', this.id !== node.id && opacity === 0)
+    node.classList.toggle('disabled', this.id !== node.id && opacity === '0%')
   }
 
   UI.ruler.all().forEach(toggleNode('ruler'))
