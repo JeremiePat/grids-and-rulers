@@ -1,24 +1,18 @@
 @import './styles/base.css';
 @import './styles/button.css';
 @import './styles/input.css';
+@import './styles/section.css';
 @import './styles/layout.css';
 
 :root {
-  --text-color:    hsla(0,        0%,   0%,  1);
-  --text-color-disable: hsla(0,   0%,   0%, .4);
-  --text-bg:       hsla(0,        0%, 100%,  1);
-  --text-bg-hover: hsla(210deg,  80%,  50%, .1);
-  --text-bg-focus: hsla(210deg,  80%,  50%, .3);
-
-  --btn-color: hsla(0, 0%,   0%,  1);
-  --btn-color-important: hsla(0, 100%,  20%, 1);
-  --btn-color-important-highlight: hsla(0, 100%, 30%,  1);
-
-  --btn-bg: hsla(0, 0%, 100%,  1);
-  --btn-bg-highlight: hsla(0, 0%, 95%,  1);
-  --btn-bg-important-highlight: hsla(0, 100%, 95%,  1);
-
-  --btn-border: hsla(0, 0%,   0%, .2);
-  --btn-border-highlight: hsla(0, 0%,  0%, .8);
-  --btn-border-important-highlight: hsla(0, 100%, 30%, .8);
+  --text-color:    hsla(  0deg,   0%,   0%, 1.0);
+  --text-faded:    hsla(  0deg,   0%,   0%, 0.33);
+  --text-bg:       hsla(  0deg,   0%, 100%, 1.0);
+  --input-bg:      hsla(  0deg,   0%, 100%, 0.8);
+  --border:        hsla(  0deg,   0%,   0%, 0.8);
+  --border-light:  hsla(  0deg,   0%,   0%, 0.2);
+  --section-hover: hsla(210deg,  80%,  50%, 0.1);
+  --section-focus: hsla(210deg,  80%,  50%, 0.3);
+  --delete-color:  hsla(  0deg,  50%,  20%, 1.0);
+  --delete-hover:  hsla(  0deg, 100%,  40%, 1.0);
 }

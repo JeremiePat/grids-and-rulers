@@ -14,3 +14,8 @@ body {
   /* Border & Background */
   background-color: var(--text-bg);
 }
+
+small {
+  opacity: 0.4;
+  vertical-align: middle;
+}
