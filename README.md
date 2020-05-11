@@ -30,13 +30,15 @@ as necessary.
 The extension has been fully rewritten to provide a more compact and flexible
 UI as well as the following new features and bug fixes:
 
- * Fix #1 : Grid definition is more bootstrap compatible (if you want different
-   ways to define a grid feel free to open an issue).
- * Fix #2 : All length can be express in any CSS units and `calc()` is also
-   allowed (be careful with relative units as they are only resolved against
-   the body sizes).
- * Fix #3 : Grid are now fully persistent on a per domain basis, they'll appear
-   each time you'll open the devtools (and disappear each time you'll close them).
+ * Fix [#1](/JeremiePat/grids-and-rulers/issues/1) : Grid definition is more
+   bootstrap compatible (if you want different ways to define a grid feel free
+   to open an issue).
+ * Fix [#2](/JeremiePat/grids-and-rulers/issues/2) : All length can be express
+   in any CSS units and `calc()` is also allowed (be careful with relative
+   units as they are only resolved against the body sizes).
+ * Fix [#3](/JeremiePat/grids-and-rulers/issues/3) : Grid are now fully
+   persistent on a per domain basis, they'll appear each time you'll open the
+   devtools (and disappear each time you'll close them).
  * Remove keyboard shortcuts as they were too buggy and not that useful (open
    an issue if you want them back).
  * Improve UI accessibility (It can now be fully operated with the keyboard).
