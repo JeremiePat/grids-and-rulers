@@ -18,15 +18,9 @@ document.getElementById('addGrid').innerText = _('BtnAddGrid')
 // UI UTILS -------------------------------------------------------------------
 const UI = { ruler, grid }
 
-function scrollToNode (node) {
-  const target = node.offsetTop
+function setScrollMargin () {
   const offset = document.querySelector('main header').offsetHeight
-
-  window.scrollTo({
-    top: target - offset,
-    left: 0,
-    behavior: 'smooth'
-  })
+  document.documentElement.style.scrollPadding = `${offset}px`
 }
 
 async function updateQuickSelect () {
@@ -54,15 +48,15 @@ async function updateQuickSelect () {
 async function onselect () {
   const data = await CACHE.get()
   const toggleNode = area => (node, i) => {
-    const opacity = data[area][i].opacity.trim()
+    const opacity = data[area][i].opacity
     node.classList.toggle('selected', this.id === node.id)
-    node.classList.toggle('disabled', this.id !== node.id && opacity === '0%')
+    node.classList.toggle('disabled', this.id !== node.id && opacity === 0)
   }
 
   UI.ruler.all().forEach(toggleNode('ruler'))
   UI.grid.all().forEach(toggleNode('grid'))
 
-  scrollToNode(this)
+  this.scrollIntoView()
   document.getElementById('quickSelect').value = this.id
 }
 
@@ -140,6 +134,7 @@ async function onadd (e) {
 document.getElementById('addRuler').addEventListener('click', onadd)
 document.getElementById('addGrid').addEventListener('click', onadd)
 document.getElementById('quickSelect').addEventListener('change', onpick)
+window.addEventListener('resize', setScrollMargin)
 
 // RETRIEVE STORED DATA ON PANEL OPEN -----------------------------------------
 async function initPanel () {
@@ -168,6 +163,8 @@ async function initPanel () {
       parent.append(node)
     })
   })
+
+  setScrollMargin()
 }
 
 initPanel()

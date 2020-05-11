@@ -15,6 +15,8 @@ section {
 
   flex: 1;
   min-width: 8rem;
+
+  scroll-snap-align: start;
 }
 
 section > * { display: flex; grid-column: 1 / span 2; }

@@ -53,8 +53,8 @@ section.selected { background: var(--section-focus); }
 section.disabled { color: var(--text-faded); }
 
 section .title {
-  font-weight: bold;
   text-align: left;
+  font-weight: bold;
   white-space: nowrap;
 }
 
